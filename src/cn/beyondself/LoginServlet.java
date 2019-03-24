@@ -17,8 +17,36 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.http.*;
 
-public class LoginServlet implements Servlet {
+public class LoginServlet extends HttpServlet {
 
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+                System.out.println(req.getContextPath());
+
+                String user = req.getParameter("user");
+                String pass = req.getParameter("pass");	
+        	
+		String inituser=getServletContext().getInitParameter("username");
+         	String initpassword = getServletContext().getInitParameter("password");
+                try{
+                        System.out.println(new String(user.getBytes("ISO-8859-1"), "UTF-8"));
+                }
+		catch(Exception e) {
+                        System.out.println("encoding error");
+                }
+                System.out.println(pass);
+                System.out.println("test");
+                PrintWriter out=resp.getWriter();
+               	out.print("user is:"+user+"   "+"password is:"+pass+"   ");
+                if(inituser.equals(user)&&initpassword.equals(pass)) {
+                                out.print("hello:"+user);
+                 }else {
+                                out.print("sorry:"+user);
+                }
+        }
+
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+                doPost(req, resp);
+        }
 	private ServletConfig servletConfig;
 	@Override
 	public void destroy() {
